@@ -509,6 +509,7 @@
           const ctx = canvas.getContext('2d');
           
           const frameImg = new Image();
+          frameImg.crossOrigin = 'anonymous';
           frameImg.src = `https://photobox.fajarjaya.site/uploads/${selectedFrameObj.filename}`;
           await new Promise((resolve) => {
             frameImg.onload = resolve;
