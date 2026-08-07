@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://photobox.fajarjaya.site/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://photobox.fajarjaya.site/uploads/:path*"
+    }
+  ]
+}

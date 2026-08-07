@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+      - PORT=5173
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 300M # Membatasi penggunaan RAM maksimal di STB
