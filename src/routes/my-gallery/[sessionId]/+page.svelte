@@ -12,7 +12,7 @@
   onMount(async () => {
     try {
       // 1. Fetch related sessions
-      const custRes = await fetch(`$apiDomain/api/sessions/related/${sessionId}`);
+      const custRes = await fetch(`https://photobox.fajarjaya.site/api/sessions/related/${sessionId}`);
       if (custRes.ok) {
         const fetchedSessions = await custRes.json();
         
@@ -44,7 +44,7 @@
       // 2. Fetch unique frames
       const uniqueFrameIds = [...new Set(allSessions.map((s: any) => s.frame_id).filter(Boolean))];
       for (const fId of uniqueFrameIds) {
-        const frameRes = await fetch(`$apiDomain/api/frames/${fId}`);
+        const frameRes = await fetch(`https://photobox.fajarjaya.site/api/frames/${fId}`);
         if (frameRes.ok) {
           const frameData = await frameRes.json();
           if (frameData.description) {
@@ -107,7 +107,7 @@
           <div class="relative overflow-hidden mb-3 md:mb-5 w-full" style="border-radius: 10px; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             {#if s.photos && s.photos.find((p: any) => p.original_name === 'final_frame.jpg')}
               <img 
-                src={`$apiDomain/uploads/${s.photos.find((p: any) => p.original_name === 'final_frame.jpg').filename}`} 
+                src={`https://photobox.fajarjaya.site/uploads/${s.photos.find((p: any) => p.original_name === 'final_frame.jpg').filename}`} 
                 alt="Photostrip" 
                 class="w-full h-auto object-cover block" 
               />
@@ -120,7 +120,7 @@
               {#each frames[s.frame_id].holes as hole, i}
                 {#if s.photos && s.photos.filter((p: any) => p.original_name !== 'final_frame.jpg')[i]}
                   <img 
-                    src={`$apiDomain/uploads/${s.photos.filter((p: any) => p.original_name !== 'final_frame.jpg')[i].filename}`}
+                    src={`https://photobox.fajarjaya.site/uploads/${s.photos.filter((p: any) => p.original_name !== 'final_frame.jpg')[i].filename}`}
                     class="absolute object-cover" 
                     style="top:{hole.y}%; left:{hole.x}%; width:{hole.w}%; height:{hole.h}%; z-index:5;" 
                     alt="Captured {i}" 
@@ -128,7 +128,7 @@
                 {/if}
               {/each}
               <img 
-                src={`$apiDomain/uploads/${frames[s.frame_id].filename}`} 
+                src={`https://photobox.fajarjaya.site/uploads/${frames[s.frame_id].filename}`} 
                 alt="Frame" 
                 class="relative w-full h-auto block object-cover z-10 pointer-events-none" 
               />
@@ -142,7 +142,7 @@
               <div class="w-full flex flex-col items-center p-1 gap-1 bg-black">
                 {#if s.photos}
                   {#each s.photos.filter((p: any) => p.original_name !== 'final_frame.jpg' && p.original_name !== 'boomerang.mp4' && p.original_name !== 'boomerang.gif') as photo}
-                    <img src={`$apiDomain/uploads/${photo.filename}`} class="w-full h-auto block object-cover rounded flex-1" alt="Photo" />
+                    <img src={`https://photobox.fajarjaya.site/uploads/${photo.filename}`} class="w-full h-auto block object-cover rounded flex-1" alt="Photo" />
                   {/each}
                 {/if}
               </div>

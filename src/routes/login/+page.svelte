@@ -33,7 +33,7 @@
     try {
       // Backend schema: { email, password }
       // Input "identifier" dikirim ke field "email" agar kompatibel
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/auth/login', {
+      const res = await fetch('https://photobox.fajarjaya.site/api/auth/login', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ email: identifier.trim(), password }),
@@ -245,4 +245,3 @@
     </p>
   </div>
 </section>
-

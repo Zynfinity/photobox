@@ -32,7 +32,7 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions/stats', { headers: authHeaders() });
+      const res = await fetch('https://photobox.fajarjaya.site/api/sessions/stats', { headers: authHeaders() });
       if (res.ok) {
         stats = await res.json();
       }
@@ -263,4 +263,3 @@
 
   </div>
 </section>
-

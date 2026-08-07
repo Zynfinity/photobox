@@ -41,7 +41,7 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions', { headers: authHeaders() });
+      const res = await fetch('https://photobox.fajarjaya.site/api/sessions', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         const data = d.data || d;
@@ -77,7 +77,7 @@
     if (!formCustomerName) return;
     formLoading = true; formError = '';
     try {
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions', {
+      const res = await fetch('https://photobox.fajarjaya.site/api/sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
@@ -112,20 +112,20 @@
     }
   }
 
-  // ── DELETE $apiDomain$apiDomain/api/sessions/:id ───────────────────────────────────────────────
+  // ── DELETE /api/sessions/:id ───────────────────────────────────────────────
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
-      const res = await fetch(`$apiDomain$apiDomain/api/sessions/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
+      const res = await fetch(`https://photobox.fajarjaya.site/api/sessions/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
       if (res.ok) sessions = sessions.filter(s => s.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }
   }
 
-  // ── PATCH $apiDomain$apiDomain/api/sessions/:id ───────────────────────────────────────────────
+  // ── PATCH /api/sessions/:id ───────────────────────────────────────────────
   async function updateSessionStatus(id: string, updates: any) {
     try {
-      const res = await fetch(`$apiDomain$apiDomain/api/sessions/${id}`, {
+      const res = await fetch(`https://photobox.fajarjaya.site/api/sessions/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify(updates)
@@ -479,4 +479,3 @@
 
   </div>
 </section>
-

@@ -4,7 +4,7 @@
   import { auth } from '$lib/auth';
 
   // ── Types dari backend ─────────────────────────────────────────────────────
-  // GET $apiDomain$apiDomain/api/sessions → { data: BackendSession[], meta: {...} }
+  // GET /api/sessions → { data: BackendSession[], meta: {...} }
   type BackendSession = {
     id: string;
     frame_id: string | null;
@@ -79,8 +79,8 @@
     }
 
     try {
-      // GET $apiDomain$apiDomain/api/sessions — backend otomatis filter berdasarkan user dari JWT
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions?limit=50', {
+      // GET /api/sessions — backend otomatis filter berdasarkan user dari JWT
+      const res = await fetch('https://photobox.fajarjaya.site/api/sessions?limit=50', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -256,4 +256,3 @@
 
   </div>
 </section>
-

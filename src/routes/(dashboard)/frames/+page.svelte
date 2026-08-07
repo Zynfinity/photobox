@@ -46,8 +46,8 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      // GET $apiDomain$apiDomain/api/frames — returns array langsung
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/frames', { headers: authHeaders() });
+      // GET /api/frames — returns array langsung
+      const res = await fetch('https://photobox.fajarjaya.site/api/frames', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         frames = (Array.isArray(d) ? d : d.frames ?? []).map((f: {
@@ -55,7 +55,7 @@
         }) => ({
           id:         f.id,
           label:      f.name,
-          previewUrl: f.filename ? `$apiDomain$apiDomain/uploads/${f.filename}` : undefined,
+          previewUrl: f.filename ? `https://photobox.fajarjaya.site/uploads/${f.filename}` : undefined,
           isActive:   true,   // backend belum ada field isActive
           createdAt:  f.created_at,
           usageCount: f.usage_count || 0,
@@ -83,10 +83,10 @@
     if (!formLabel.trim()) { formError = 'Nama frame wajib diisi.'; return; }
     formLoading = true; formError = '';
     try {
-      // POST/PUT $apiDomain$apiDomain/api/frames — multipart (name sebagai field)
+      // POST/PUT /api/frames — multipart (name sebagai field)
       // Untuk tambah/edit sederhana tanpa upload gambar, kirim sebagai JSON via PUT text fields
       const body = { name: formLabel.trim() };
-      const url = editTarget ? `$apiDomain$apiDomain/api/frames/${editTarget.id}` : 'https://photobox.fajarjaya.site$apiDomain$apiDomain/api/frames';
+      const url = editTarget ? `https://photobox.fajarjaya.site/api/frames/${editTarget.id}` : 'https://photobox.fajarjaya.site/api/frames';
       // Frame POST/PUT pakai multipart, send field via FormData
       const fd = new FormData();
       fd.append('name', formLabel.trim());
@@ -103,7 +103,7 @@
         const d = await res.json();
         const mapped = {
           id: d.id, label: d.name,
-          previewUrl: d.filename ? `$apiDomain$apiDomain/uploads/${d.filename}` : undefined,
+          previewUrl: d.filename ? `https://photobox.fajarjaya.site/uploads/${d.filename}` : undefined,
           isActive: true, createdAt: d.created_at, usageCount: 0,
         };
         frames = !editTarget ? [mapped, ...frames] : frames.map(f => f.id === editTarget?.id ? mapped : f);
@@ -116,11 +116,11 @@
     finally { formLoading = false; }
   }
 
-  // DELETE $apiDomain$apiDomain/api/frames/:id
+  // DELETE /api/frames/:id
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
-      const res = await fetch(`$apiDomain$apiDomain/api/frames/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
+      const res = await fetch(`https://photobox.fajarjaya.site/api/frames/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
       if (res.ok) frames = frames.filter(f => f.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }
@@ -264,4 +264,3 @@
 
   </div>
 </section>
-

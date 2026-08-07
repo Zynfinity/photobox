@@ -32,7 +32,7 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/admin/settings', { headers: authHeaders() });
+      const res = await fetch('https://photobox.fajarjaya.site/api/admin/settings', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         settings = { ...settings, ...d };
@@ -45,7 +45,7 @@
     e.preventDefault();
     saving = true; error = ''; saved = false;
     try {
-      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/admin/settings', {
+      const res = await fetch('https://photobox.fajarjaya.site/api/admin/settings', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify(settings),
@@ -189,4 +189,3 @@
 
   </div>
 </section>
-
