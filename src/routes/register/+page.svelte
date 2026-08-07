@@ -26,7 +26,7 @@
     error = '';
     try {
       // Backend schema: { name, email, password } — nomor HP belum didukung
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -238,3 +238,4 @@
     </p>
   </div>
 </section>
+

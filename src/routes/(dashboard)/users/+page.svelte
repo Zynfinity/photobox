@@ -50,8 +50,8 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      // GET /api/users — admin endpoint
-      const res = await fetch('/api/users?limit=100', { headers: authHeaders() });
+      // GET $apiDomain$apiDomain/api/users — admin endpoint
+      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/users?limit=100', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         users = (d.data ?? d ?? []).map((u: {
@@ -102,10 +102,10 @@
     if (modalMode === 'add' && formPassword.length < 8) { formError = 'Password minimal 8 karakter.'; return; }
     formLoading = true; formError = '';
     try {
-      // POST /api/users  atau  PATCH /api/users/:id
+      // POST $apiDomain$apiDomain/api/users  atau  PATCH $apiDomain$apiDomain/api/users/:id
       const body: Record<string, unknown> = { name: formName, email: formEmail, role: formRole };
       if (formPassword) body.password = formPassword;
-      const url    = modalMode === 'add' ? '/api/users' : `/api/users/${editTarget?.id}`;
+      const url    = modalMode === 'add' ? 'https://photobox.fajarjaya.site$apiDomain$apiDomain/api/users' : `$apiDomain$apiDomain/api/users/${editTarget?.id}`;
       const method = modalMode === 'add' ? 'POST' : 'PATCH';
       const res    = await fetch(url, { method, headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(body) });
       if (res.ok) {
@@ -121,11 +121,11 @@
     finally { formLoading = false; }
   }
 
-  // DELETE /api/users/:id
+  // DELETE $apiDomain$apiDomain/api/users/:id
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
-      const res = await fetch(`/api/users/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
+      const res = await fetch(`$apiDomain$apiDomain/api/users/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
       if (res.ok) users = users.filter(u => u.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }
@@ -267,3 +267,4 @@
 
   </div>
 </section>
+

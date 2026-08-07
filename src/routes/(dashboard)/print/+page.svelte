@@ -43,8 +43,8 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      // GET /api/print — mengembalikan semua print jobs (admin lihat semua)
-      const res = await fetch('/api/print', { headers: authHeaders() });
+      // GET $apiDomain$apiDomain/api/print — mengembalikan semua print jobs (admin lihat semua)
+      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/print', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         // Backend: { id, photo_id, user_id, copies, status, created_at, original_name, user_name }
@@ -77,10 +77,10 @@
   let displayJobs   = $derived(showDemo ? demoJobs : jobs);
   let displayPrinter = $derived(showDemo ? demoPrinter : printer);
 
-  // PATCH /api/print/:id — ubah status
+  // PATCH $apiDomain$apiDomain/api/print/:id — ubah status
   async function retryJob(id: string) {
     try {
-      const res = await fetch(`/api/print/${id}`, {
+      const res = await fetch(`$apiDomain$apiDomain/api/print/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({ status: 'queued' }),
@@ -89,11 +89,11 @@
     } catch { /* silent */ }
   }
 
-  // DELETE /api/print/:id
+  // DELETE $apiDomain$apiDomain/api/print/:id
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
-      const res = await fetch(`/api/print/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
+      const res = await fetch(`$apiDomain$apiDomain/api/print/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
       if (res.ok) jobs = jobs.filter(j => j.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }
@@ -244,3 +244,4 @@
 
   </div>
 </section>
+

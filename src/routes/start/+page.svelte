@@ -166,7 +166,7 @@
 
   async function initAdminSession(sid: string) {
     try {
-      const res = await fetch(`/api/sessions/${sid}`, { headers: authHeaders() });
+      const res = await fetch(`$apiDomain$apiDomain/api/sessions/${sid}`, { headers: authHeaders() });
       if (res.ok) {
         const data = await res.json();
         if (data.session_frames && data.session_frames.length > 0) {
@@ -212,7 +212,7 @@
   async function fetchFrames() {
     loadingFrames = true;
     try {
-      const res = await fetch('/api/frames', { headers: authHeaders() });
+      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/frames', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         frames = (Array.isArray(d) ? d : []).map((f: any) => {
@@ -224,7 +224,7 @@
             }
           } catch(e) {}
           return {
-            id: f.id, name: f.name, url: f.filename ? `/uploads/${f.filename}` : '', holes, filename: f.filename
+            id: f.id, name: f.name, url: f.filename ? `$apiDomain$apiDomain/uploads/${f.filename}` : '', holes, filename: f.filename
           };
         });
       }
@@ -256,7 +256,7 @@
   
   async function handleStart() {
     try {
-      const res = await fetch('/api/sessions?status=active&limit=1', { headers: authHeaders() });
+      const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions?status=active&limit=1', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         const sessions = d.data || d;
@@ -284,7 +284,7 @@
 
     if (!activeSessionId) {
       try {
-        const res = await fetch('/api/sessions', {
+        const res = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ customer_name: userName, customer_phone: userPhone, status: 'active' })
@@ -312,7 +312,7 @@
     try {
       let sRes;
       if (activeSessionId) {
-        sRes = await fetch(`/api/sessions/${activeSessionId}`, {
+        sRes = await fetch(`$apiDomain$apiDomain/api/sessions/${activeSessionId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ 
@@ -320,7 +320,7 @@
           })
         });
       } else {
-        sRes = await fetch('/api/sessions', {
+        sRes = await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/sessions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ 
@@ -394,7 +394,7 @@
   async function handleAutoStop() {
     if (activeSessionId) {
       try {
-        await fetch(`/api/sessions/${activeSessionId}`, {
+        await fetch(`$apiDomain$apiDomain/api/sessions/${activeSessionId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ status: 'completed' })
@@ -509,7 +509,7 @@
           const ctx = canvas.getContext('2d');
           
           const frameImg = new Image();
-          frameImg.src = `/uploads/${selectedFrameObj.filename}`;
+          frameImg.src = `$apiDomain$apiDomain/uploads/${selectedFrameObj.filename}`;
           await new Promise((resolve) => {
             frameImg.onload = resolve;
             frameImg.onerror = resolve;
@@ -549,13 +549,13 @@
           }
         }
 
-        await fetch('/api/photos/upload', {
+        await fetch('https://photobox.fajarjaya.site$apiDomain$apiDomain/api/photos/upload', {
           method: 'POST',
           headers: authHeaders(),
           body: formData
         });
 
-        await fetch(`/api/sessions/${activeSessionId}`, {
+        await fetch(`$apiDomain$apiDomain/api/sessions/${activeSessionId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ status: 'completed' })
