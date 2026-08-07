@@ -323,7 +323,7 @@
 
       <!-- QR Image -->
       <div class="p-4 rounded-2xl mb-6 bg-white w-56 h-56 flex items-center justify-center" style="border: 2px dashed var(--admin-card-border);">
-        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin : '' + '/my-gallery/' + qrTarget.id)}`} alt="QR Code" class="w-48 h-48" />
+        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent((typeof window !== 'undefined' ? window.location.origin : '') + '/my-gallery/' + qrTarget.id)}`} alt="QR Code" class="w-48 h-48" />
       </div>
 
       <!-- Link Copy -->
