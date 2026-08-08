@@ -47,7 +47,7 @@
     if (!adminGuard()) return;
     try {
       // GET /api/frames — returns array langsung
-      const res = await fetch('https://photobox.fajarjaya.site/api/frames', { headers: authHeaders() });
+      const res = await fetch('https://panel.tail11f9ba.ts.net/api/frames', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         frames = (Array.isArray(d) ? d : d.frames ?? []).map((f: {
@@ -55,7 +55,7 @@
         }) => ({
           id:         f.id,
           label:      f.name,
-          previewUrl: f.filename ? `https://photobox.fajarjaya.site/uploads/${f.filename}` : undefined,
+          previewUrl: f.filename ? `https://panel.tail11f9ba.ts.net/uploads/${f.filename}` : undefined,
           isActive:   true,   // backend belum ada field isActive
           createdAt:  f.created_at,
           usageCount: f.usage_count || 0,
@@ -86,7 +86,7 @@
       // POST/PUT /api/frames — multipart (name sebagai field)
       // Untuk tambah/edit sederhana tanpa upload gambar, kirim sebagai JSON via PUT text fields
       const body = { name: formLabel.trim() };
-      const url = editTarget ? `https://photobox.fajarjaya.site/api/frames/${editTarget.id}` : 'https://photobox.fajarjaya.site/api/frames';
+      const url = editTarget ? `https://panel.tail11f9ba.ts.net/api/frames/${editTarget.id}` : 'https://panel.tail11f9ba.ts.net/api/frames';
       // Frame POST/PUT pakai multipart, send field via FormData
       const fd = new FormData();
       fd.append('name', formLabel.trim());
@@ -103,7 +103,7 @@
         const d = await res.json();
         const mapped = {
           id: d.id, label: d.name,
-          previewUrl: d.filename ? `https://photobox.fajarjaya.site/uploads/${d.filename}` : undefined,
+          previewUrl: d.filename ? `https://panel.tail11f9ba.ts.net/uploads/${d.filename}` : undefined,
           isActive: true, createdAt: d.created_at, usageCount: 0,
         };
         frames = !editTarget ? [mapped, ...frames] : frames.map(f => f.id === editTarget?.id ? mapped : f);
@@ -120,7 +120,7 @@
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
-      const res = await fetch(`https://photobox.fajarjaya.site/api/frames/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/frames/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
       if (res.ok) frames = frames.filter(f => f.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }

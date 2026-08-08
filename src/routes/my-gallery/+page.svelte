@@ -80,7 +80,7 @@
 
     try {
       // GET /api/sessions — backend otomatis filter berdasarkan user dari JWT
-      const res = await fetch('https://photobox.fajarjaya.site/api/sessions?limit=50', {
+      const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions?limit=50', {
         headers: { Authorization: `Bearer ${token}` }
       });
 

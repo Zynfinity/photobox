@@ -15,7 +15,7 @@
     if (!session || generatingBoomerang) return;
     generatingBoomerang = true;
     try {
-      const res = await fetch(`https://photobox.fajarjaya.site/api/sessions/${session.id}/boomerang`, {
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/${session.id}/boomerang`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_frame_id: frameIdQuery })
@@ -42,7 +42,7 @@
   onMount(async () => {
     try {
       // Fetch related sessions using the id
-      const res = await fetch(`https://photobox.fajarjaya.site/api/sessions/related/${id}`);
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/related/${id}`);
       if (res.ok) {
         const allSessions = await res.json();
         session = allSessions.find((s: any) => s.id === id);
@@ -57,7 +57,7 @@
         
         // Fetch frame details if session has a frame
         if (targetFrameId) {
-          const frameRes = await fetch(`https://photobox.fajarjaya.site/api/frames/${targetFrameId}`);
+          const frameRes = await fetch(`https://panel.tail11f9ba.ts.net/api/frames/${targetFrameId}`);
           if (frameRes.ok) {
             frameData = await frameRes.json();
             if (frameData.description) {
@@ -140,13 +140,13 @@
         <div class="flex flex-col items-center shrink-0 w-full md:w-auto">
           <div class="rounded-xl overflow-hidden shadow-2xl mb-6 bg-black w-40 sm:w-48 md:w-56 lg:w-[260px]" style="border: 1px solid var(--admin-card-border);">
             {#if finalFrame}
-              <img src={`https://photobox.fajarjaya.site/uploads/${finalFrame.filename}`} class="w-full h-auto block object-cover" alt="Photostrip" />
+              <img src={`https://panel.tail11f9ba.ts.net/uploads/${finalFrame.filename}`} class="w-full h-auto block object-cover" alt="Photostrip" />
             {:else if frameData && frameData.holes}
               <div class="relative w-full">
                 {#each frameData.holes as hole, i}
                   {#if singlePhotos[i]}
                     <img 
-                      src={`https://photobox.fajarjaya.site/uploads/${singlePhotos[i].filename}`}
+                      src={`https://panel.tail11f9ba.ts.net/uploads/${singlePhotos[i].filename}`}
                       class="absolute object-cover" 
                       style="top:{hole.y}%; left:{hole.x}%; width:{hole.w}%; height:{hole.h}%; z-index:5;" 
                       alt="Captured {i}" 
@@ -154,7 +154,7 @@
                   {/if}
                 {/each}
                 <img 
-                  src={`https://photobox.fajarjaya.site/uploads/${frameData.filename}`} 
+                  src={`https://panel.tail11f9ba.ts.net/uploads/${frameData.filename}`} 
                   alt="Frame" 
                   class="relative w-full h-auto block object-cover z-10 pointer-events-none" 
                 />
@@ -162,7 +162,7 @@
             {:else}
               <div class="w-full flex flex-col items-center p-1 gap-1 bg-black">
                 {#each singlePhotos as photo}
-                  <img src={`https://photobox.fajarjaya.site/uploads/${photo.filename}`} class="w-full h-auto object-cover rounded flex-1" alt="Photo" />
+                  <img src={`https://panel.tail11f9ba.ts.net/uploads/${photo.filename}`} class="w-full h-auto object-cover rounded flex-1" alt="Photo" />
                 {/each}
               </div>
             {/if}
@@ -170,7 +170,7 @@
 
           <div class="flex flex-col gap-3 w-40 sm:w-48 md:w-56 lg:w-[260px]">
             <a 
-              href={finalFrame ? `https://photobox.fajarjaya.site/api/photos/${finalFrame.id}/download` : '#'} 
+              href={finalFrame ? `https://panel.tail11f9ba.ts.net/api/photos/${finalFrame.id}/download` : '#'} 
               class="btn-primary !h-12 w-full mt-auto text-sm"
               style="cursor: {finalFrame ? 'pointer' : 'not-allowed'}; text-decoration: none; opacity: {finalFrame ? '1' : '0.5'};"
             >
@@ -193,13 +193,13 @@
             {#if boomerang}
               <div class="rounded-xl overflow-hidden border-[4px] shadow-lg mb-4" style="width: 240px; aspect-ratio: 4/3; background: #000; border-color: var(--admin-card-border);">
                 {#if boomerang.filename.endsWith('.mp4')}
-                  <video src={`https://photobox.fajarjaya.site/uploads/${boomerang.filename}`} autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                  <video src={`https://panel.tail11f9ba.ts.net/uploads/${boomerang.filename}`} autoplay loop muted playsinline class="w-full h-full object-cover"></video>
                 {:else}
-                  <img src={`https://photobox.fajarjaya.site/uploads/${boomerang.filename}`} class="w-full h-full object-cover" alt="Boomerang" />
+                  <img src={`https://panel.tail11f9ba.ts.net/uploads/${boomerang.filename}`} class="w-full h-full object-cover" alt="Boomerang" />
                 {/if}
               </div>
               <a 
-                href={`https://photobox.fajarjaya.site/api/photos/${boomerang.id}/download`} 
+                href={`https://panel.tail11f9ba.ts.net/api/photos/${boomerang.id}/download`} 
                 class="btn-primary !h-12 w-[240px]" style="text-decoration: none;"
               >
                 <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
@@ -232,9 +232,9 @@
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {#each singlePhotos as photo, idx}
                 <div class="relative group rounded-lg overflow-hidden shadow-lg bg-black aspect-[3/4]" style="border: 1px solid var(--admin-card-border);">
-                  <img src={`https://photobox.fajarjaya.site/uploads/${photo.filename}`} class="w-full h-full object-cover" alt="Single {idx+1}" />
+                  <img src={`https://panel.tail11f9ba.ts.net/uploads/${photo.filename}`} class="w-full h-full object-cover" alt="Single {idx+1}" />
                   <a 
-                    href={`https://photobox.fajarjaya.site/api/photos/${photo.id}/download`} 
+                    href={`https://panel.tail11f9ba.ts.net/api/photos/${photo.id}/download`} 
                     class="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center font-bold text-sm" 
                     style="color: #00d9d9; text-decoration: none;"
                   >

@@ -51,7 +51,7 @@
     if (!adminGuard()) return;
     try {
       // GET /api/users — admin endpoint
-      const res = await fetch('https://photobox.fajarjaya.site/api/users?limit=100', { headers: authHeaders() });
+      const res = await fetch('https://panel.tail11f9ba.ts.net/api/users?limit=100', { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         users = (d.data ?? d ?? []).map((u: {
@@ -105,7 +105,7 @@
       // POST /api/users  atau  PATCH /api/users/:id
       const body: Record<string, unknown> = { name: formName, email: formEmail, role: formRole };
       if (formPassword) body.password = formPassword;
-      const url    = modalMode === 'add' ? 'https://photobox.fajarjaya.site/api/users' : `https://photobox.fajarjaya.site/api/users/${editTarget?.id}`;
+      const url    = modalMode === 'add' ? 'https://panel.tail11f9ba.ts.net/api/users' : `https://panel.tail11f9ba.ts.net/api/users/${editTarget?.id}`;
       const method = modalMode === 'add' ? 'POST' : 'PATCH';
       const res    = await fetch(url, { method, headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(body) });
       if (res.ok) {
@@ -125,7 +125,7 @@
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
-      const res = await fetch(`https://photobox.fajarjaya.site/api/users/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/users/${deleteTarget.id}`, { method: 'DELETE', headers: authHeaders() });
       if (res.ok) users = users.filter(u => u.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }

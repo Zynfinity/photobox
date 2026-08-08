@@ -154,7 +154,7 @@
       }));
       fd.append('image', uploadedFile);
 
-      const res = await fetch('https://photobox.fajarjaya.site/api/frames', {
+      const res = await fetch('https://panel.tail11f9ba.ts.net/api/frames', {
         method: 'POST',
         headers: authHeaders(),
         body: fd

@@ -43,7 +43,7 @@
 
   async function loadSession() {
     try {
-      const res = await fetch(`https://photobox.fajarjaya.site/api/sessions/${sessionId}`, { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/${sessionId}`, { headers: authHeaders() });
       if (res.ok) session = await res.json();
     } catch { session = null; }
     finally { loading = false; }
@@ -61,7 +61,7 @@
         fd.append('session_id', sessionId);
         fd.append('file', file);
 
-        const res = await fetch('https://photobox.fajarjaya.site/api/photos/upload', {
+        const res = await fetch('https://panel.tail11f9ba.ts.net/api/photos/upload', {
           method:  'POST',
           headers: authHeaders(),
           body:    fd,
@@ -103,7 +103,7 @@
   async function handleDeletePhoto() {
     if (!deletePhotoTarget || !session) return;
     try {
-      const res = await fetch(`https://photobox.fajarjaya.site/api/photos/${deletePhotoTarget.id}`, {
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/photos/${deletePhotoTarget.id}`, {
         method: 'DELETE', headers: authHeaders(),
       });
       if (res.ok) {
@@ -279,7 +279,7 @@
                 <!-- Thumbnail -->
                 <div class="relative" style="aspect-ratio:3/4;">
                   <img
-                    src="https://photobox.fajarjaya.site/uploads/{photo.filename}"
+                    src="https://panel.tail11f9ba.ts.net/uploads/{photo.filename}"
                     alt={photo.original_name}
                     class="w-full h-full object-cover"
                     loading="lazy"
