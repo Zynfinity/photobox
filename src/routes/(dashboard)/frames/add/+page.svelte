@@ -20,7 +20,15 @@
   let showConfirmDeleteHole = $state(false);
 
   // Draggable logic
-  let imgWrapperEl: HTMLElement | null = null;
+  let imgWrapperEl: HTMLDivElement | null = null;
+  let zoomLevel = $state(1);
+  let panX = $state(0);
+  let panY = $state(0);
+  let isPanning = false;
+  let panStartX = 0;
+  let panStartY = 0;
+  let initialPanX = 0;
+  let initialPanY = 0;
   let isDraggingHole = false;
   let isResizingHole = false;
   let startX = 0;
@@ -74,6 +82,7 @@
   }
 
   function startDrag(e: PointerEvent, holeId: number) {
+    e.stopPropagation();
     if (isResizingHole) return;
     activeHoleId = holeId;
     isDraggingHole = true;
@@ -130,7 +139,35 @@
   function onPointerUp(e: PointerEvent) {
     isDraggingHole = false;
     isResizingHole = false;
+    isPanning = false;
     (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
+  }
+
+  function startPan(e: PointerEvent) {
+    // Only pan if clicking on the background (not holes) or holding space
+    isPanning = true;
+    panStartX = e.clientX;
+    panStartY = e.clientY;
+    initialPanX = panX;
+    initialPanY = panY;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+  }
+
+  function onCanvasPointerMove(e: PointerEvent) {
+    if (isPanning) {
+      const dx = e.clientX - panStartX;
+      const dy = e.clientY - panStartY;
+      panX = initialPanX + dx;
+      panY = initialPanY + dy;
+    }
+  }
+
+  function handleWheel(e: WheelEvent) {
+    if (!uploadedImage) return;
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    // For smoother zoom on trackpads, we could check deltaY magnitude, but a simple step is okay
+    zoomLevel = Math.max(0.2, Math.min(3, zoomLevel + delta));
   }
 
   async function saveFrame() {
@@ -154,7 +191,7 @@
       }));
       fd.append('image', uploadedFile);
 
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/frames', {
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/frames`, {
         method: 'POST',
         headers: authHeaders(),
         body: fd
@@ -191,7 +228,15 @@
 <div class="flex h-[calc(100vh-64px)] overflow-hidden w-full" style="background:var(--admin-bg);">
 
   <!-- KIRI: Canvas Area -->
-  <div class="flex-1 relative flex items-center justify-center p-8 overflow-hidden checkerboard">
+  <div 
+    class="flex-1 relative flex items-center justify-center p-8 overflow-hidden checkerboard touch-none"
+    onwheel={handleWheel}
+    onpointerdown={startPan}
+    onpointermove={onCanvasPointerMove}
+    onpointerup={onPointerUp}
+    onpointercancel={onPointerUp}
+    onpointerleave={onPointerUp}
+  >
     {#if !uploadedImage}
       <!-- Dropzone -->
       <label 
@@ -209,12 +254,22 @@
         <p style="color: var(--admin-text-muted);">Gunakan area transparan pada gambar PNG untuk lubang foto pelanggan.</p>
       </label>
     {:else}
+      <!-- Zoom Control -->
+      <div class="fixed bottom-6 left-1/4 -translate-x-1/2 bg-black/50 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-4 z-50 text-white shadow-xl border border-white/10" style="margin-left: 12%;">
+        <span class="text-xs font-bold uppercase tracking-wider">Zoom</span>
+        <input type="range" min="0.2" max="3" step="0.1" bind:value={zoomLevel} class="w-32 accent-[#00d9d9]" />
+        <span class="text-xs font-mono">{Math.round(zoomLevel * 100)}%</span>
+        <button onclick={() => { zoomLevel = 1; panX = 0; panY = 0; }} class="ml-2 hover:text-[#00d9d9] transition-colors" title="Reset Zoom">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+        </button>
+      </div>
+
       <!-- Interactive Canvas -->
       <!-- Wrapper that tightly hugs the image -->
       <div 
         bind:this={imgWrapperEl}
-        class="relative shadow-2xl" 
-        style="max-width:100%; max-height:100%;"
+        class="relative shadow-2xl transition-transform duration-75" 
+        style="max-width:100%; max-height:100%; transform: translate({panX}px, {panY}px) scale({zoomLevel}); transform-origin: center; cursor: {isPanning ? 'grabbing' : 'grab'};"
       >
         <img src={uploadedImage} alt="Frame Preview" class="max-w-full max-h-full object-contain pointer-events-none" style="max-height: 85vh;" />
         

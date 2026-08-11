@@ -44,7 +44,7 @@
     if (!adminGuard()) return;
     try {
       // GET /api/print — mengembalikan semua print jobs (admin lihat semua)
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/print', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/print`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         // Backend: { id, photo_id, user_id, copies, status, created_at, original_name, user_name }
@@ -73,9 +73,8 @@
     return map[s] ?? 'antri';
   }
 
-  let showDemo      = $derived(!loading && jobs.length === 0 && IS_DEV);
-  let displayJobs   = $derived(showDemo ? demoJobs : jobs);
-  let displayPrinter = $derived(showDemo ? demoPrinter : printer);
+  let displayJobs   = $derived(jobs);
+  let displayPrinter = $derived(printer);
 
   // PATCH /api/print/:id — ubah status
   async function retryJob(id: string) {

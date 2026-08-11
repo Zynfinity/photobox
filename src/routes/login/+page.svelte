@@ -33,7 +33,7 @@
     try {
       // Backend schema: { email, password }
       // Input "identifier" dikirim ke field "email" agar kompatibel
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/auth/login', {
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/auth/login`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ email: identifier.trim(), password }),

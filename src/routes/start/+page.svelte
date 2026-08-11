@@ -212,7 +212,7 @@
   async function fetchFrames() {
     loadingFrames = true;
     try {
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/frames', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/frames`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         frames = (Array.isArray(d) ? d : []).map((f: any) => {
@@ -256,7 +256,7 @@
   
   async function handleStart() {
     try {
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions?status=active&limit=1', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions?status=active&limit=1`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         const sessions = d.data || d;
@@ -284,7 +284,7 @@
 
     if (!activeSessionId) {
       try {
-        const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions', {
+        const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ customer_name: userName, customer_phone: userPhone, status: 'active' })
@@ -320,7 +320,7 @@
           })
         });
       } else {
-        sRes = await fetch('https://panel.tail11f9ba.ts.net/api/sessions', {
+        sRes = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...authHeaders() },
           body: JSON.stringify({ 
@@ -539,7 +539,23 @@
               const hW = (hole.w / 100) * canvas.width;
               const hH = (hole.h / 100) * canvas.height;
               
-              ctx.drawImage(img, hX, hY, hW, hH);
+              // Implement object-fit: cover logic for canvas
+              const imgRatio = img.width / img.height;
+              const holeRatio = hW / hH;
+              let sW = img.width, sH = img.height;
+              let sX = 0, sY = 0;
+              
+              if (imgRatio > holeRatio) {
+                // Image is wider than the hole -> crop sides
+                sW = img.height * holeRatio;
+                sX = (img.width - sW) / 2;
+              } else {
+                // Image is taller than the hole -> crop top/bottom
+                sH = img.width / holeRatio;
+                sY = (img.height - sH) / 2;
+              }
+              
+              ctx.drawImage(img, sX, sY, sW, sH, hX, hY, hW, hH);
             }
             ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
             
@@ -550,7 +566,7 @@
           }
         }
 
-        await fetch('https://panel.tail11f9ba.ts.net/api/photos/upload', {
+        await fetch(`https://panel.tail11f9ba.ts.net/api/photos/upload`, {
           method: 'POST',
           headers: authHeaders(),
           body: formData

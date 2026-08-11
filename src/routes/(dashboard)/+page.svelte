@@ -32,41 +32,17 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions/stats', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/stats`, { headers: authHeaders() });
       if (res.ok) {
         stats = await res.json();
       }
-    } catch { /* fallback to demo */ }
+    } catch (e) { 
+      console.error('Stats fetch error:', e); 
+    }
     finally { loading = false; }
   });
 
-  // Demo data for dev mode
-  const demoStats: Stats = {
-    totalUsers: 48, totalSessions: 124, totalPhotos: 1380, totalFrames: 12,
-    todaySessions: 3, totalRevenue: 620000,
-    dailyActivity: [
-      { day: '2026-08-01', sessions: 5, photos: 20 },
-      { day: '2026-08-02', sessions: 3, photos: 12 },
-      { day: '2026-08-03', sessions: 7, photos: 35 },
-      { day: '2026-08-04', sessions: 4, photos: 18 },
-      { day: '2026-08-05', sessions: 6, photos: 28 },
-      { day: '2026-08-06', sessions: 2, photos: 10 },
-      { day: '2026-08-07', sessions: 3, photos: 14 },
-    ],
-    framePopularity: [
-      { label: 'Neon Pink Frame', count: 42 },
-      { label: 'Minimalist White', count: 28 },
-      { label: 'Gold Classic', count: 19 },
-      { label: 'Neon Cyan Frame', count: 14 },
-    ],
-    recentSessions: [
-      { id: 's1', customer_name: 'Ayu Pratiwi', status: 'completed', payment_status: 'paid', created_at: '2026-08-04', photo_count: 12, frame_count: 1 },
-      { id: 's2', customer_name: 'Bima Santoso', status: 'active', payment_status: 'unpaid', created_at: '2026-08-04', photo_count: 8, frame_count: 2 },
-    ],
-  };
-
-  let showDemo = $derived(!loading && !stats && IS_DEV);
-  let d = $derived(showDemo ? demoStats : stats);
+  let d = $derived(stats);
 
   // Chart helpers
   let dailyData = $derived(d?.dailyActivity ?? []);

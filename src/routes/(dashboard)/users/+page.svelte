@@ -51,7 +51,7 @@
     if (!adminGuard()) return;
     try {
       // GET /api/users — admin endpoint
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/users?limit=100', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/users?limit=100`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         users = (d.data ?? d ?? []).map((u: {
@@ -70,8 +70,7 @@
     finally { loading = false; }
   });
 
-  let showDemo = $derived(!loading && users.length === 0 && IS_DEV);
-  let display  = $derived(showDemo ? demoUsers : users);
+  let display  = $derived(users);
   let filtered = $derived(
     search.trim()
       ? display.filter(u =>
@@ -105,7 +104,7 @@
       // POST /api/users  atau  PATCH /api/users/:id
       const body: Record<string, unknown> = { name: formName, email: formEmail, role: formRole };
       if (formPassword) body.password = formPassword;
-      const url    = modalMode === 'add' ? 'https://panel.tail11f9ba.ts.net/api/users' : `https://panel.tail11f9ba.ts.net/api/users/${editTarget?.id}`;
+      const url    = modalMode === 'add' ? `https://panel.tail11f9ba.ts.net/api/users` : `https://panel.tail11f9ba.ts.net/api/users/${editTarget?.id}`;
       const method = modalMode === 'add' ? 'POST' : 'PATCH';
       const res    = await fetch(url, { method, headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(body) });
       if (res.ok) {

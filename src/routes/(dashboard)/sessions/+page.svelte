@@ -41,7 +41,7 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         const data = d.data || d;
@@ -77,7 +77,7 @@
     if (!formCustomerName) return;
     formLoading = true; formError = '';
     try {
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions', {
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({
@@ -132,8 +132,14 @@
       });
       if (res.ok) {
         sessions = sessions.map(s => s.id === id ? { ...s, ...updates } : s);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert('Gagal: ' + (err.message || err.error || res.statusText));
       }
-    } catch { /* silent */ }
+    } catch (e: any) { 
+      console.error(e);
+      alert('Error jaringan: ' + e.message);
+    }
   }
 
   function handleMarkPaid(s: Session) {
@@ -150,8 +156,7 @@
     localStorage.setItem(`session_command_${s.id}`, 'stop_' + Date.now());
   }
 
-  let showDemo = $derived(!loading && sessions.length === 0 && IS_DEV);
-  let display  = $derived(showDemo ? demoSessions : sessions);
+  let display  = $derived(sessions);
   let filtered = $derived(
     search.trim()
       ? display.filter(s =>
@@ -447,7 +452,7 @@
             <div class="flex justify-end gap-2 shrink-0 w-full md:w-auto">
               {#if s.payment_status === 'unpaid'}
                 <button onclick={() => handleMarkPaid(s)} class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#10b981] hover:opacity-80 transition-opacity whitespace-nowrap">
-                  Lunas
+                  Lunaskan
                 </button>
               {/if}
               {#if s.status === 'pending'}

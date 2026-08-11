@@ -43,7 +43,7 @@
 
       // 2. Fetch unique frames
       const uniqueFrameIds = [...new Set(allSessions.map((s: any) => s.frame_id).filter(Boolean))];
-      for (const fId of uniqueFrameIds) {
+      await Promise.all(uniqueFrameIds.map(async (fId) => {
         const frameRes = await fetch(`https://panel.tail11f9ba.ts.net/api/frames/${fId}`);
         if (frameRes.ok) {
           const frameData = await frameRes.json();
@@ -57,7 +57,7 @@
           }
           frames[fId as string] = frameData;
         }
-      }
+      }));
     } catch (e) {
       console.error(e);
       error = true;
@@ -92,12 +92,23 @@
       <p style="color: #ff4757; font-size: 16px; font-weight: 600;">Sesi tidak ditemukan.</p>
     </div>
   {:else}
-    <header class="text-center mb-10 mt-4 leading-relaxed">
-      <h1 class="text-3xl md:text-4xl mb-4 font-bold" style="color: #00d9d9; letter-spacing: -0.02em;">FMPhoto</h1>
-      <h2 class="text-xl md:text-2xl font-medium" style="color: var(--admin-text);">
-        Galeri Kak <span style="color: #00d9d9; font-weight: 700;">{session.customer_name || 'Guest'}</span>
-      </h2>
-    </header>
+    {#if session.payment_status !== 'paid'}
+      <div class="flex flex-col items-center justify-center mt-32 gap-6 text-center max-w-md mx-auto p-8 rounded-3xl shadow-2xl" style="background: var(--admin-card-bg); border: 1px solid var(--admin-card-border);">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background: rgba(225, 29, 72, 0.1); color: #e11d48;">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-on-surface">Menunggu Pembayaran</h2>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-2">Halo Kak <span style="color: #00d9d9; font-weight: 700;">{session.customer_name || 'Guest'}</span>!<br>Silakan selesaikan pembayaran terlebih dahulu di kasir untuk dapat melihat dan mengunduh foto Anda.</p>
+      </div>
+    {:else}
+      <header class="text-center mb-10 mt-4 leading-relaxed">
+        <h1 class="text-3xl md:text-4xl mb-4 font-bold" style="color: #00d9d9; letter-spacing: -0.02em;">FMPhoto</h1>
+        <h2 class="text-xl md:text-2xl font-medium" style="color: var(--admin-text);">
+          Galeri Kak <span style="color: #00d9d9; font-weight: 700;">{session.customer_name || 'Guest'}</span>
+        </h2>
+      </header>
 
     <div class="flex flex-wrap justify-center gap-4 md:gap-8 w-full max-w-6xl mx-auto">
       {#each allSessions as s, idx}
@@ -169,5 +180,6 @@
         </div>
       {/each}
     </div>
+    {/if}
   {/if}
 </div>

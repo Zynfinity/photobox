@@ -80,7 +80,7 @@
 
     try {
       // GET /api/sessions — backend otomatis filter berdasarkan user dari JWT
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/sessions?limit=50', {
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions?limit=50`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -110,8 +110,7 @@
     { id: 'sess-004', date: '2026-06-14', label: 'Neon Cyan Frame',   photoCount: 6,  totalSize: '22.4 MB' },
   ];
 
-  let showDemo = $derived(!loading && sessions.length === 0 && IS_DEV);
-  let displaySessions = $derived(showDemo ? demoSessions : sessions);
+  let displaySessions = $derived(sessions);
 </script>
 
 <svelte:head>
@@ -142,8 +141,7 @@
 
       {#if !loading}
         <p class="text-label-md text-on-surface-variant mt-4">
-          {#if showDemo}⚡ Mode preview — data di bawah adalah placeholder.
-          {:else}{sessions.length} sesi tersimpan{/if}
+          {sessions.length} sesi tersimpan
         </p>
       {/if}
     </header>

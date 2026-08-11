@@ -41,12 +41,10 @@
 
   onMount(async () => {
     try {
-      // Fetch related sessions using the id
-      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/related/${id}`);
+      // Fetch session directly using the id
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/${id}`);
       if (res.ok) {
-        const allSessions = await res.json();
-        session = allSessions.find((s: any) => s.id === id);
-        if (!session) throw new Error('Session not found in related list');
+        session = await res.json();
         
         let targetFrameId = session.frame_id;
         
@@ -119,6 +117,20 @@
       </a>
     </div>
   {:else}
+    {#if session.payment_status !== 'paid'}
+      <div class="flex flex-col items-center justify-center mt-20 gap-6 text-center max-w-md mx-auto p-8 rounded-3xl shadow-2xl" style="background: var(--admin-card-bg); border: 1px solid var(--admin-card-border);">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background: rgba(225, 29, 72, 0.1); color: #e11d48;">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-on-surface">Menunggu Pembayaran</h2>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-2">Halo Kak <span style="color: #00d9d9; font-weight: 700;">{session.customer_name || 'Guest'}</span>!<br>Silakan selesaikan pembayaran terlebih dahulu di kasir untuk dapat melihat dan mengunduh foto Anda.</p>
+        <a href="/my-gallery/{baseId}" class="btn-primary mt-2" style="text-decoration: none;">
+          Kembali ke Galeri
+        </a>
+      </div>
+    {:else}
     <!-- Content Area -->
     <div class="w-full max-w-5xl">
       <!-- Top Bar: Back & Info -->
@@ -248,5 +260,6 @@
         </div>
       </div>
     </div>
+    {/if}
   {/if}
 </div>

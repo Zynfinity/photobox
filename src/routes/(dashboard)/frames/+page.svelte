@@ -47,7 +47,7 @@
     if (!adminGuard()) return;
     try {
       // GET /api/frames — returns array langsung
-      const res = await fetch('https://panel.tail11f9ba.ts.net/api/frames', { headers: authHeaders() });
+      const res = await fetch(`https://panel.tail11f9ba.ts.net/api/frames`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
         frames = (Array.isArray(d) ? d : d.frames ?? []).map((f: {
@@ -65,8 +65,7 @@
     finally { loading = false; }
   });
 
-  let showDemo = $derived(!loading && frames.length === 0 && IS_DEV);
-  let display  = $derived(showDemo ? demoFrames : frames);
+  let display  = $derived(frames);
 
   function openAdd() {
     editTarget = null; formLabel = ''; formFile = null; formActive = true; formError = '';
@@ -86,7 +85,7 @@
       // POST/PUT /api/frames — multipart (name sebagai field)
       // Untuk tambah/edit sederhana tanpa upload gambar, kirim sebagai JSON via PUT text fields
       const body = { name: formLabel.trim() };
-      const url = editTarget ? `https://panel.tail11f9ba.ts.net/api/frames/${editTarget.id}` : 'https://panel.tail11f9ba.ts.net/api/frames';
+      const url = editTarget ? `https://panel.tail11f9ba.ts.net/api/frames/${editTarget.id}` : `https://panel.tail11f9ba.ts.net/api/frames`;
       // Frame POST/PUT pakai multipart, send field via FormData
       const fd = new FormData();
       fd.append('name', formLabel.trim());
@@ -124,11 +123,6 @@
       if (res.ok) frames = frames.filter(f => f.id !== deleteTarget?.id);
     } catch { /* silent */ }
     finally { deleteTarget = null; }
-  }
-
-  // Toggle aktif: backend belum ada field, cukup update UI lokal
-  function toggleActive(f: Frame) {
-    frames = frames.map(fr => fr.id === f.id ? { ...fr, isActive: !fr.isActive } : fr);
   }
 </script>
 
@@ -228,18 +222,6 @@
             <div class="p-3 flex flex-col items-center flex-1">
               <h3 class="text-on-surface text-sm font-bold text-center truncate w-full mb-0.5">{f.label}</h3>
               <p class="text-on-surface-variant text-[10px] text-center mb-2">Dipakai {f.usageCount} sesi</p>
-
-              <!-- Toggle Aktif -->
-              <div class="w-full flex items-center justify-between p-2 mb-2 rounded-xl" style="background: rgba(255,255,255,0.03); border: 1px solid var(--admin-card-border);">
-                <span class="text-xs font-bold text-on-surface">Aktifkan frame</span>
-                <button onclick={() => toggleActive(f)}
-                  class="relative w-10 h-5 rounded-full transition-colors duration-200 focus:outline-none"
-                  style="background:{f.isActive?'#10b981':'rgba(255,255,255,0.2)'};">
-                  <span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"
-                    style="transform:{f.isActive?'translateX(20px)':'translateX(0)'};">
-                  </span>
-                </button>
-              </div>
 
               <!-- Actions -->
               <div class="flex gap-2 w-full mt-auto">

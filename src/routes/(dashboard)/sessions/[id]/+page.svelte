@@ -61,7 +61,7 @@
         fd.append('session_id', sessionId);
         fd.append('file', file);
 
-        const res = await fetch('https://panel.tail11f9ba.ts.net/api/photos/upload', {
+        const res = await fetch(`https://panel.tail11f9ba.ts.net/api/photos/upload`, {
           method:  'POST',
           headers: authHeaders(),
           body:    fd,
