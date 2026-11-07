@@ -46,7 +46,6 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      // GET /api/frames — returns array langsung
       const res = await fetch(`https://panel.tail11f9ba.ts.net/api/frames`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
@@ -82,11 +81,9 @@
     if (!formLabel.trim()) { formError = 'Nama frame wajib diisi.'; return; }
     formLoading = true; formError = '';
     try {
-      // POST/PUT /api/frames — multipart (name sebagai field)
       // Untuk tambah/edit sederhana tanpa upload gambar, kirim sebagai JSON via PUT text fields
       const body = { name: formLabel.trim() };
       const url = editTarget ? `https://panel.tail11f9ba.ts.net/api/frames/${editTarget.id}` : `https://panel.tail11f9ba.ts.net/api/frames`;
-      // Frame POST/PUT pakai multipart, send field via FormData
       const fd = new FormData();
       fd.append('name', formLabel.trim());
       if (formFile) {
@@ -114,8 +111,6 @@
     } catch { formError = 'Tidak bisa terhubung ke server.'; }
     finally { formLoading = false; }
   }
-
-  // DELETE /api/frames/:id
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
@@ -127,8 +122,6 @@
 </script>
 
 <svelte:head><title>FM.PHOTO — Kelola Frame</title></svelte:head>
-
-<!-- Modal tambah/edit -->
 {#if showModal}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div class="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -178,8 +171,6 @@
     </div>
   </div>
 {/if}
-
-<!-- Modal hapus -->
 {#if deleteTarget}
   <ConfirmModal
     title="Hapus Frame?"
@@ -207,7 +198,6 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
         {#each display as f, i (f.id)}
           <div class="rounded-2xl overflow-hidden flex flex-col" style="background:var(--admin-card-bg);border:1px solid var(--admin-card-border);">
-            <!-- Preview with Checkerboard Background -->
             <div class="relative w-full p-3 flex justify-center items-center overflow-hidden rounded-t-2xl" style="background-color: #f0f0f0; background-image: linear-gradient(45deg, #e0e0e0 25%, transparent 25%), linear-gradient(-45deg, #e0e0e0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e0e0e0 75%), linear-gradient(-45deg, transparent 75%, #e0e0e0 75%); background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0px; height: 280px;">
               
 
@@ -217,13 +207,9 @@
                 <div class="w-full h-full rounded shadow-xl" style="background:{frameGradients[i % frameGradients.length]};"></div>
               {/if}
             </div>
-
-            <!-- Info + aksi -->
             <div class="p-3 flex flex-col items-center flex-1">
               <h3 class="text-on-surface text-sm font-bold text-center truncate w-full mb-0.5">{f.label}</h3>
               <p class="text-on-surface-variant text-[10px] text-center mb-2">Dipakai {f.usageCount} sesi</p>
-
-              <!-- Actions -->
               <div class="flex gap-2 w-full mt-auto">
                 <button onclick={() => openEdit(f)} class="flex-1 py-1.5 rounded-lg text-[10px] font-bold transition-colors flex justify-center items-center gap-1.5" style="background:rgba(0,217,217,.1);color:#00d9d9;">
                   <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>

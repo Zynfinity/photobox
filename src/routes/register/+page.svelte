@@ -58,7 +58,6 @@
   class="min-h-[calc(100vh-4rem)] flex items-center justify-center relative overflow-hidden px-6 py-12"
   style="background: linear-gradient(160deg, #1a1625 0%, #0f0d15 100%);"
 >
-  <!-- Background glow orbs -->
   <div class="absolute inset-0 pointer-events-none">
     <div
       class="absolute top-1/4 -right-32 w-64 h-64 rounded-full opacity-15"
@@ -69,19 +68,14 @@
       style="background: radial-gradient(circle, #ff006e 0%, transparent 70%); filter: blur(60px);"
     ></div>
   </div>
-
-  <!-- Register card -->
   <div
     class="relative w-full max-w-md"
     style="background: #1f1a28; border: 1px solid #49454e; border-radius: 1.5rem; padding: clamp(1.5rem, 5vw, 2.5rem); box-shadow: 0 16px 40px rgba(0,0,0,0.6);"
   >
-    <!-- Top accent bar -->
     <div
       class="absolute top-0 left-8 right-8 h-0.5 rounded-full"
       style="background: linear-gradient(90deg, transparent, #d946ef, #ff006e, transparent);"
     ></div>
-
-    <!-- Header -->
     <div class="text-center mb-8">
       <p class="section-label mb-3">Buat Akun</p>
       <h1
@@ -107,8 +101,6 @@
     {/if}
 
     <form onsubmit={handleSubmit} class="space-y-5" id="register-form">
-
-      <!-- Nama -->
       <div class="space-y-2">
         <label
           for="register-name"
@@ -127,8 +119,6 @@
           class="input-field"
         />
       </div>
-
-      <!-- Email -->
       <div class="space-y-2">
         <label
           for="register-email"
@@ -146,8 +136,6 @@
           class="input-field"
         />
       </div>
-
-      <!-- Nomor HP -->
       <div class="space-y-2">
         <label
           for="register-phone"
@@ -165,8 +153,6 @@
           class="input-field"
         />
       </div>
-
-      <!-- Password -->
       <div class="space-y-2">
         <label
           for="register-password"
@@ -185,8 +171,6 @@
           class="input-field"
         />
       </div>
-
-      <!-- Konfirmasi Password -->
       <div class="space-y-2">
         <label
           for="register-confirm-password"
@@ -209,8 +193,6 @@
           <p class="text-label-sm" style="color: #ff4757; margin-top: 4px;">Password tidak cocok.</p>
         {/if}
       </div>
-
-      <!-- Submit -->
       <button
         id="register-submit"
         type="submit"

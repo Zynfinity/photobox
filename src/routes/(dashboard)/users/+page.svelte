@@ -50,7 +50,6 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      // GET /api/users — admin endpoint
       const res = await fetch(`https://panel.tail11f9ba.ts.net/api/users?limit=100`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
@@ -101,7 +100,6 @@
     if (modalMode === 'add' && formPassword.length < 8) { formError = 'Password minimal 8 karakter.'; return; }
     formLoading = true; formError = '';
     try {
-      // POST /api/users  atau  PATCH /api/users/:id
       const body: Record<string, unknown> = { name: formName, email: formEmail, role: formRole };
       if (formPassword) body.password = formPassword;
       const url    = modalMode === 'add' ? `https://panel.tail11f9ba.ts.net/api/users` : `https://panel.tail11f9ba.ts.net/api/users/${editTarget?.id}`;
@@ -119,8 +117,6 @@
     } catch { formError = 'Tidak bisa terhubung ke server.'; }
     finally { formLoading = false; }
   }
-
-  // DELETE /api/users/:id
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
@@ -132,8 +128,6 @@
 </script>
 
 <svelte:head><title>VELVET.FILM — Kelola Pengguna</title></svelte:head>
-
-<!-- Modal tambah / edit -->
 {#if showModal}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div class="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -184,8 +178,6 @@
     </div>
   </div>
 {/if}
-
-<!-- Modal konfirmasi hapus -->
 {#if deleteTarget}
   <ConfirmModal
     title="Hapus Pengguna?"

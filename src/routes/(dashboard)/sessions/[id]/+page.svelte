@@ -4,8 +4,6 @@
   import { adminGuard, authHeaders } from '$lib/adminGuard';
   import AdminBreadcrumb from '$lib/components/AdminBreadcrumb.svelte';
   import ConfirmModal from '$lib/components/ConfirmModal.svelte';
-
-  // ── Types ──────────────────────────────────────────────────────────────────
   type Photo = {
     id: string;
     filename: string;
@@ -23,8 +21,6 @@
     created_at: string;
     photos: Photo[];
   };
-
-  // ── State ──────────────────────────────────────────────────────────────────
   let session = $state<SessionDetail | null>(null);
   let loading = $state(true);
   let uploading = $state(false);
@@ -34,8 +30,6 @@
   let dragOver = $state(false);
 
   let sessionId = $derived($page.params.id);
-
-  // ── Data fetching ──────────────────────────────────────────────────────────
   onMount(async () => {
     if (!adminGuard()) return;
     await loadSession();
@@ -48,8 +42,6 @@
     } catch { session = null; }
     finally { loading = false; }
   }
-
-  // ── Upload foto ────────────────────────────────────────────────────────────
   async function handleUpload(files: FileList | null) {
     if (!files || files.length === 0) return;
     uploading = true; uploadError = ''; uploadSuccess = 0;
@@ -58,7 +50,7 @@
     for (const file of Array.from(files)) {
       try {
         const fd = new FormData();
-        fd.append('session_id', sessionId);
+        fd.append('session_id', sessionId || '');
         fd.append('file', file);
 
         const res = await fetch(`https://panel.tail11f9ba.ts.net/api/photos/upload`, {
@@ -98,8 +90,6 @@
     dragOver = false;
     handleUpload(e.dataTransfer?.files ?? null);
   }
-
-  // ── Hapus foto ─────────────────────────────────────────────────────────────
   async function handleDeletePhoto() {
     if (!deletePhotoTarget || !session) return;
     try {
@@ -112,8 +102,6 @@
     } catch { /* silent */ }
     finally { deletePhotoTarget = null; }
   }
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
   function formatDate(iso: string) {
     try {
       return new Intl.DateTimeFormat('id-ID', {

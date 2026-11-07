@@ -10,23 +10,17 @@
   
   let videoEl = $state<HTMLVideoElement | null>(null);
   let stream = $state<MediaStream | null>(null);
-  
-  // User Info
   let userName = $state('');
   let userPhone = $state('');
   let formError = $state('');
   
-  let frames = $state<{id:string, name:string, url:string, holes: any[]}[]>([]);
-  let selectedFrameId = $state('');
+  let frames = $state<{ id: string; name: string; url: string; holes: any[]; filename?: string }[]>([]);
+  let selectedFrameId = $state<string | null>('');
   let loadingFrames = $state(false);
   let selectedFrameObj = $derived(frames.find(f => f.id === selectedFrameId));
-  
-  // Session
-  let activeSessionId = $state('');
-  let activeSessionFrameId = $state('');
+  let activeSessionId = $state<string | null>('');
+  let activeSessionFrameId = $state<string | null>('');
   let sessionFramesCount = $state(0);
-  
-  // Session & Capture Timers
   let sessionTimeLeft = $state(5 * 60);
   let sessionTimerInterval: number;
   let isSessionRunning = $state(false);
@@ -77,12 +71,8 @@
       shutterAudio.play().catch(e => console.error('Shutter sound failed', e));
     }
   }
-  
-  // Booth Filters & Settings
   let isMirrored = $state(true);
   let activeFilter = $state('normal');
-  
-  // Capture logic
   let capturedPhotos = $state<string[]>([]);
   let isTakingPhoto = $state(false);
   let sessionFinished = $state(false);
@@ -174,8 +164,6 @@
         } else {
           sessionFramesCount = 0;
         }
-        
-        // Load frames first
         await fetchFrames();
         if (data.session_frames && data.session_frames.length > 0) {
           const lastSessionFrame = data.session_frames[data.session_frames.length - 1];
@@ -264,7 +252,7 @@
           const activeSession = sessions[0];
           if (activeSession && activeSession.status === 'active') {
             activeSessionId = activeSession.id;
-            await initAdminSession(activeSessionId);
+            await initAdminSession(activeSession.id);
             return;
           }
         }
@@ -643,8 +631,6 @@
   {#if isTakingPhoto}
     <div class="absolute inset-0 bg-white z-50 transition-opacity duration-75"></div>
   {/if}
-
-  <!-- Greeting -->
   {#if userName && currentState !== 'intro' && currentState !== 'booth'}
     <div class="absolute top-6 right-6 z-40">
       <div class="px-5 py-2.5 rounded-full font-medium text-sm shadow-xl backdrop-blur-md flex items-center gap-2"
@@ -653,10 +639,6 @@
       </div>
     </div>
   {/if}
-
-  <!-- ═══════════════════════════════════════
-       INTRO
-  ═══════════════════════════════════════ -->
   {#if currentState === 'intro'}
     <div class="absolute inset-0 flex items-center justify-center z-20">
       <div class="relative w-[340px] rounded-3xl p-8 flex flex-col items-center justify-center shadow-2xl backdrop-blur-md"
@@ -670,10 +652,6 @@
         </button>
       </div>
     </div>
-
-  <!-- ═══════════════════════════════════════
-       INFO
-  ═══════════════════════════════════════ -->
   {:else if currentState === 'info'}
     <div class="absolute inset-0 flex items-center justify-center z-30"
       style="background:rgba(0,0,0,0.72);backdrop-filter:blur(8px);">
@@ -703,10 +681,6 @@
         </div>
       </div>
     </div>
-
-  <!-- ═══════════════════════════════════════
-       FRAME SELECTION
-  ═══════════════════════════════════════ -->
   {:else if currentState === 'frame'}
     <div class="absolute inset-0 z-30 flex flex-col" style="background:rgba(10,8,16,0.85);backdrop-filter:blur(16px);">
       <div class="flex items-center justify-between p-6 md:p-10 shrink-0">
@@ -809,14 +783,8 @@
         </button>
       </div>
     </div>
-
-  <!-- ═══════════════════════════════════════
-       BOOTH
-  ═══════════════════════════════════════ -->
   {:else if currentState === 'booth'}
     <div class="absolute inset-0 z-10 flex flex-col pointer-events-none" style="padding:16px; gap:0;">
-
-      <!-- Top Bar -->
       <div class="flex justify-between items-center pointer-events-auto shrink-0" style="height:64px;">
         <button
           onclick={() => currentState='frame'}
@@ -883,8 +851,6 @@
               </button>
             {/each}
           </div>
-
-          <!-- Review Overlay -->
           {#if reviewPhotoUrl}
             <div class="absolute inset-0 z-40 bg-black flex flex-col items-center justify-center overflow-hidden">
               <img src={reviewPhotoUrl} class="absolute inset-0 w-full h-full object-cover" alt="Review" />
@@ -996,13 +962,8 @@
 
       </div>
     </div>
-  <!-- ═══════════════════════════════════════
-       RESULT
-  ═══════════════════════════════════════ -->
   {:else if currentState === 'result'}
     <div class="absolute inset-0 z-10 flex flex-col md:flex-row bg-gray-900 overflow-hidden">
-      
-      <!-- Background Effects -->
       <div class="absolute inset-0 pointer-events-none opacity-50">
         <div class="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-[#00d9d9] rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
         <div class="absolute bottom-0 -right-1/4 w-1/2 h-1/2 bg-[#d946ef] rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
@@ -1012,8 +973,6 @@
       <div class="absolute top-6 left-1/2 -translate-x-1/2 z-20 px-6 py-2 rounded-full font-bold text-xl shadow-lg border border-white/10 text-white backdrop-blur-md bg-black/40">
         {formatTime(sessionTimeLeft)}
       </div>
-
-      <!-- Left Side -->
       <div class="flex-1 flex flex-col items-center justify-center relative p-8">
         <div class="relative shrink-0 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10" style="height: 80%; aspect-ratio: 1/3; border-radius:12px; overflow:hidden;">
           {#if selectedFrameObj}
@@ -1026,8 +985,6 @@
           {/if}
         </div>
       </div>
-
-      <!-- Right Side -->
       <div class="flex-1 flex flex-col items-center justify-center p-8 md:p-12 relative z-10">
         {#if resultStep === 'confirm'}
           <div class="w-full max-w-md bg-black/40 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl flex flex-col items-center text-center">
@@ -1048,7 +1005,6 @@
           
         {:else if resultStep === 'final'}
           <div class="w-full max-w-md flex flex-col items-center">
-            <!-- Scan Gallery Box -->
             <div class="mb-6 p-8 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/10 w-full flex flex-col items-center shadow-2xl">
               <p class="text-white font-bold text-lg mb-6 flex items-center gap-2">
                 <svg width="20" height="20" class="text-[#00d9d9]" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
@@ -1060,8 +1016,6 @@
                 </div>
               {/if}
             </div>
-
-            <!-- Invoice Box -->
             <div class="mb-8 p-6 rounded-2xl w-full bg-white/5 backdrop-blur-md border border-white/10 text-white shadow-xl">
               <p class="font-bold text-sm mb-4 text-gray-400 tracking-wider">Rincian Sesi</p>
               <div class="flex justify-between text-base mb-4">
@@ -1073,8 +1027,6 @@
                 <span class="font-mono text-[#00d9d9]">Rp {(Math.max(1, sessionFramesCount) * 5000).toLocaleString('id-ID')}</span>
               </div>
             </div>
-
-            <!-- Buttons -->
             <div class="flex gap-4 w-full">
               <button onclick={resetSession} class="flex-1 py-4 rounded-xl font-bold text-white bg-white/5 hover:bg-white/10 transition-colors border border-white/10 flex justify-center items-center gap-2">
                 Selesai

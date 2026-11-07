@@ -54,13 +54,10 @@
   <title>FM.PHOTO — Kenangan kamu, tersimpan selamanya.</title>
   <meta name="description" content="Galeri digital photobooth FM.PHOTO. Foto HD dari sesi kamu, siap download kapan saja." />
 </svelte:head>
-
-<!-- Hero Section -->
 <section
   class="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden"
   style="background: linear-gradient(160deg, #1a1625 0%, #0f0d15 60%, #1a1625 100%);"
 >
-  <!-- Background glow orbs -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
     <div
       class="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-20"
@@ -77,24 +74,16 @@
   </div>
 
   <div class="relative max-w-container mx-auto px-5 md:px-8 py-12 md:py-0 flex flex-col md:flex-row items-center gap-10 md:gap-16 w-full">
-    <!-- Kiri: Teks utama -->
     <div class="flex-1 space-y-5 md:space-y-8 max-w-lg w-full">
-      <!-- Badge -->
       <div>
         <span class="badge-primary badge text-xs">Photobooth · FM.PHOTO</span>
       </div>
-
-      <!-- Headline -->
       <h1 class="font-display text-on-surface leading-tight" style="font-family: 'Instrument Serif', serif; font-size: clamp(36px, 8vw, 72px); line-height: 1.08; letter-spacing: -0.02em;">
         Kenangan serumu,<br /><em style="font-style: italic; color: #00d9d9;">tersimpan rapi</em> di sini.
       </h1>
-
-      <!-- Sub-headline -->
       <p class="text-body-md md:text-body-lg text-on-surface-variant leading-relaxed" style="max-width: 400px;">
         Hasil foto photobooth kamu tersimpan aman. Cukup login dan langsung unduh foto favoritmu kapan saja dari HP.
       </p>
-
-      <!-- Input kode + CTA -->
       <div class="flex flex-col gap-3 w-full" style="max-width: 420px;">
         <input
           id="hero-access-code"
@@ -116,8 +105,6 @@
           {/if}
         </button>
       </div>
-
-      <!-- Statistik -->
       <div class="flex gap-6 md:gap-8 pt-1">
         <div>
           <p class="text-on-surface font-semibold" style="font-family: 'Space Grotesk', sans-serif; font-size: 20px;">12rb+</p>
@@ -171,8 +158,6 @@
     </div>
   </div>
 </section>
-
-<!-- Cara kerja -->
 <section class="py-16 md:py-24" style="background-color: #0f0d15;">
   <div class="max-w-container mx-auto px-5 md:px-8">
     <div class="text-center mb-10 md:mb-16">
@@ -183,7 +168,6 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-      <!-- Langkah 1 -->
       <div class="card relative overflow-hidden group">
         <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl" style="background: linear-gradient(90deg, #00d9d9, #d946ef);"></div>
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-3 md:mb-4" style="background: rgba(0, 217, 217, 0.15);">
@@ -194,8 +178,6 @@
         <h3 class="text-on-surface mb-2" style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px;">1. Foto di Photobooth</h3>
         <p class="text-on-surface-variant text-sm md:text-base">Datang ke booth kami, pose sesuka hati, dan biarkan sistem menyimpan hasil fotomu secara otomatis.</p>
       </div>
-
-      <!-- Langkah 2 -->
       <div class="card relative overflow-hidden group">
         <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl" style="background: linear-gradient(90deg, #d946ef, #ff006e);"></div>
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-3 md:mb-4" style="background: rgba(217, 70, 239, 0.15);">
@@ -208,8 +190,6 @@
         <h3 class="text-on-surface mb-2" style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px;">2. Masuk ke Galeri</h3>
         <p class="text-on-surface-variant text-sm md:text-base">Login ke akunmu dan buka galeri pribadi. Semua foto dari sesimu siap untuk diakses.</p>
       </div>
-
-      <!-- Langkah 3 -->
       <div class="card relative overflow-hidden group">
         <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl" style="background: linear-gradient(90deg, #ff006e, #00d9d9);"></div>
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-3 md:mb-4" style="background: rgba(255, 0, 110, 0.15);">

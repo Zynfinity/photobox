@@ -2,8 +2,6 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { auth } from '$lib/auth';
-
-  // ── Types dari backend ─────────────────────────────────────────────────────
   // GET /api/sessions → { data: BackendSession[], meta: {...} }
   type BackendSession = {
     id: string;
@@ -25,8 +23,6 @@
     coverSrc?: string;
     totalSize?: string;
   };
-
-  // ── State ──────────────────────────────────────────────────────────────────
   let sessions: Session[] = $state([]);
   let loading = $state(true);
   let currentUser = $state<{ name: string; email: string; role: string } | null>(null);
@@ -34,8 +30,6 @@
 
   auth.user.subscribe((u) => (currentUser = u));
   auth.token.subscribe((t) => (token = t));
-
-  // ── Mapper backend → UI ────────────────────────────────────────────────────
   function mapSession(s: BackendSession): Session {
     return {
       id: s.id,
@@ -44,8 +38,6 @@
       photoCount: s.photo_count ?? 0,
     };
   }
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
   function formatDate(iso: string): string {
     try {
       return new Intl.DateTimeFormat('id-ID', {
@@ -70,8 +62,6 @@
     'linear-gradient(135deg, #003333 0%, #00d9d9 100%)',
     'linear-gradient(135deg, #4d0030 0%, #ff006e 100%)',
   ];
-
-  // ── Data fetching ──────────────────────────────────────────────────────────
   onMount(async () => {
     if (!token) {
       goto('/login?redirect=/my-gallery');
@@ -99,17 +89,6 @@
       loading = false;
     }
   });
-
-  // ── Dev demo data ──────────────────────────────────────────────────────────
-  const IS_DEV = import.meta.env.DEV;
-
-  const demoSessions: Session[] = [
-    { id: 'sess-001', date: '2026-07-25', label: 'Neon Pink Frame',   photoCount: 12, totalSize: '48.3 MB' },
-    { id: 'sess-002', date: '2026-07-12', label: 'Minimalist White',  photoCount: 8,  totalSize: '31.7 MB' },
-    { id: 'sess-003', date: '2026-06-28', label: 'Gold Classic',      photoCount: 20, totalSize: '80.1 MB' },
-    { id: 'sess-004', date: '2026-06-14', label: 'Neon Cyan Frame',   photoCount: 6,  totalSize: '22.4 MB' },
-  ];
-
   let displaySessions = $derived(sessions);
 </script>
 

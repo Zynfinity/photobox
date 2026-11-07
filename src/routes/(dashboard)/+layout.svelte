@@ -27,28 +27,19 @@
     if (path === '/') return currentPath === '/';
     return currentPath.startsWith(path) && path !== '/';
   }
-
-  // Removed unused derived variables for colors since we use CSS variables
 </script>
 
 <div class="flex h-screen overflow-hidden" style="background:var(--admin-bg); font-family:'Space Grotesk',sans-serif;">
-
-  <!-- ═══ SIDEBAR ═══ -->
   <aside
     class="flex flex-col shrink-0 transition-all duration-300 overflow-hidden z-50"
     style="width:{isSidebarOpen?'240px':'0px'}; background:var(--admin-sidebar); border-right:1px solid var(--admin-sidediv);"
   >
-    <!-- Logo -->
     <div class="h-16 flex items-center px-6 shrink-0" style="border-bottom:1px solid var(--admin-sidediv);">
       <a href="/" class="text-xl font-bold tracking-wider whitespace-nowrap" style="color:var(--admin-nav-active);">
         FM<span style="color:#00d9d9;">Photo</span>
       </a>
     </div>
-
-    <!-- Nav -->
     <nav class="flex-1 overflow-y-auto overflow-x-hidden py-3">
-
-      <!-- OPERASIONAL -->
       <div class="mb-1">
         <p class="px-5 pt-3 pb-1.5 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap" style="color:#00d9d9;">OPERASIONAL</p>
 
@@ -66,8 +57,6 @@
           </a>
         {/each}
       </div>
-
-      <!-- MANAJEMEN -->
       <div class="mb-1">
         <p class="px-5 pt-4 pb-1.5 text-[10px] font-bold tracking-[0.12em] whitespace-nowrap" style="color:#00d9d9;">MANAJEMEN</p>
 
@@ -88,8 +77,6 @@
       </div>
 
     </nav>
-
-    <!-- Bottom: Trial + Logout -->
     <div class="p-4 shrink-0" style="border-top:1px solid var(--admin-sidediv);">
 
       <button

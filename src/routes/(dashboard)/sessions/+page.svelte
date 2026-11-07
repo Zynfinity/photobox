@@ -6,8 +6,6 @@
   import SearchInput from '$lib/components/SearchInput.svelte';
   import EmptyState from '$lib/components/EmptyState.svelte';
   import { formatDate } from '$lib/utils';
-
-  // ── Types ──────────────────────────────────────────────────────────────────
   type Session = {
     id: string;
     userId: string;
@@ -20,8 +18,6 @@
     frameCount: number;
     totalSize: string;
   };
-
-  // ── State ──────────────────────────────────────────────────────────────────
   let sessions: Session[] = $state([]);
   let loading = $state(true);
   let search = $state('');
@@ -35,8 +31,6 @@
   let formError    = $state('');
 
   const IS_DEV = import.meta.env.DEV;
-
-  const demoSessions: Session[] = [];
 
   onMount(async () => {
     if (!adminGuard()) return;
@@ -65,8 +59,6 @@
       loading = false;
     }
   });
-
-  // ── Buat Sesi Baru (Hanya Info) ────────────────────────────────────────────
   async function openNewModal() {
     showNewModal = true;
     formCustomerName = ''; formCustomerPhone = ''; formError = '';
@@ -111,8 +103,6 @@
       formLoading = false;
     }
   }
-
-  // ── DELETE /api/sessions/:id ───────────────────────────────────────────────
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
@@ -121,8 +111,6 @@
     } catch { /* silent */ }
     finally { deleteTarget = null; }
   }
-
-  // ── PATCH /api/sessions/:id ───────────────────────────────────────────────
   async function updateSessionStatus(id: string, updates: any) {
     try {
       const res = await fetch(`https://panel.tail11f9ba.ts.net/api/sessions/${id}`, {
@@ -160,15 +148,10 @@
   let filtered = $derived(
     search.trim()
       ? display.filter(s =>
-          s.userName.toLowerCase().includes(search.toLowerCase()) ||
-          s.frameLabel.toLowerCase().includes(search.toLowerCase()) ||
-          s.date.includes(search)
+          s.userName.toLowerCase().includes(search.toLowerCase()) || s.date.includes(search)
         )
       : display
   );
-
-
-  // ── Sync Timer Logic ───────────────────────────────────────────────────────
   let timers = $state<Record<string, number>>({});
   let timerInterval: number;
 
@@ -334,15 +317,15 @@
       <!-- Link Copy -->
       <p class="text-xs text-on-surface-variant mb-2">Atau salin link galeri di bawah ini:</p>
       <div class="flex w-full mb-6">
-        <input type="text" readonly value="{typeof window !== 'undefined' ? window.location.origin : ''}/my-gallery/{qrTarget.id}" class="flex-1 px-3 py-2 text-xs bg-black/20 text-gray-300 border border-gray-600 border-r-0 outline-none" style="border-top-left-radius: 8px; border-bottom-left-radius: 8px;" />
-        <button onclick={() => navigator.clipboard.writeText(`${typeof window !== 'undefined' ? window.location.origin : ''}/my-gallery/${qrTarget.id}`)} class="px-4 bg-[#3b82f6] text-white text-xs font-bold hover:opacity-90 transition-opacity flex items-center gap-1" style="border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+        <input type="text" readonly value="{typeof window !== 'undefined' ? window.location.origin : ''}/my-gallery/{qrTarget?.id ?? ""}" class="flex-1 px-3 py-2 text-xs bg-black/20 text-gray-300 border border-gray-600 border-r-0 outline-none" style="border-top-left-radius: 8px; border-bottom-left-radius: 8px;" />
+        <button onclick={() => navigator.clipboard.writeText(`${typeof window !== 'undefined' ? window.location.origin : ''}/my-gallery/${qrTarget?.id ?? ""}`)} class="px-4 bg-[#3b82f6] text-white text-xs font-bold hover:opacity-90 transition-opacity flex items-center gap-1" style="border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
           Copy
         </button>
       </div>
 
       <!-- Open Browser -->
-      <a href="/my-gallery/{qrTarget.id}" target="_blank" class="w-full py-3 rounded-full font-bold text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity" style="background: #10b981; text-decoration: none;">
+      <a href="/my-gallery/{qrTarget?.id ?? ""}" target="_blank" class="w-full py-3 rounded-full font-bold text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity" style="background: #10b981; text-decoration: none;">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
         Buka Galeri di Browser
       </a>

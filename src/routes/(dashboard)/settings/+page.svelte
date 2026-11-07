@@ -96,8 +96,6 @@
       </div>
     {:else}
       <form onsubmit={handleSave} class="space-y-6 max-w-xl">
-
-        <!-- Informasi Booth -->
         <div class="rounded-2xl p-5" style="background:var(--admin-card-bg);border:1px solid var(--admin-card-border);">
           <h2 class="text-on-surface font-semibold mb-5" style="font-family:'Space Grotesk',sans-serif;font-size:15px;">Informasi Booth</h2>
           <div class="space-y-4">
@@ -115,8 +113,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Pengaturan Sesi -->
         <div class="rounded-2xl p-5" style="background:var(--admin-card-bg);border:1px solid var(--admin-card-border);">
           <h2 class="text-on-surface font-semibold mb-5" style="font-family:'Space Grotesk',sans-serif;font-size:15px;">Pengaturan Sesi</h2>
           <div class="space-y-4">
@@ -124,7 +120,6 @@
               <label class="block text-label-sm text-on-surface-variant mb-1.5" style="text-transform:uppercase;letter-spacing:.05em;font-size:11px;">Maks. Foto per Sesi</label>
               <input bind:value={settings.maxPhotosPerSession} type="number" min="1" max="50" class="input-field" style="border-radius:12px;" />
             </div>
-            <!-- Toggle: izin download tamu -->
             <div class="flex items-center justify-between py-1">
               <div>
                 <p class="text-on-surface text-label-md" style="font-family:'Space Grotesk',sans-serif;">Izinkan Download Tanpa Login</p>
@@ -141,12 +136,9 @@
             </div>
           </div>
         </div>
-
-        <!-- Pengaturan Cetak -->
         <div class="rounded-2xl p-5" style="background:var(--admin-card-bg);border:1px solid var(--admin-card-border);">
           <h2 class="text-on-surface font-semibold mb-5" style="font-family:'Space Grotesk',sans-serif;font-size:15px;">Pengaturan Cetak</h2>
           <div class="space-y-4">
-            <!-- Toggle: cetak otomatis -->
             <div class="flex items-center justify-between py-1">
               <div>
                 <p class="text-on-surface text-label-md" style="font-family:'Space Grotesk',sans-serif;">Cetak Otomatis</p>
@@ -169,8 +161,6 @@
             {/if}
           </div>
         </div>
-
-        <!-- Tombol simpan -->
         <button type="submit" disabled={saving} class="btn-primary w-full"
           style="height:52px;font-size:15px;{saving?'opacity:.7;cursor:not-allowed;':''}">
           {#if saving}

@@ -43,11 +43,9 @@
   onMount(async () => {
     if (!adminGuard()) return;
     try {
-      // GET /api/print — mengembalikan semua print jobs (admin lihat semua)
       const res = await fetch(`https://panel.tail11f9ba.ts.net/api/print`, { headers: authHeaders() });
       if (res.ok) {
         const d = await res.json();
-        // Backend: { id, photo_id, user_id, copies, status, created_at, original_name, user_name }
         jobs = (Array.isArray(d) ? d : d.data ?? []).map((j: {
           id: string; user_name: string; original_name: string;
           copies: number; status: string; created_at: string;
@@ -64,8 +62,6 @@
     } catch { /* demo */ }
     finally { loading = false; }
   });
-
-  // Map backend status ke UI status
   function mapStatus(s: string): 'antri' | 'mencetak' | 'selesai' | 'gagal' {
     const map: Record<string, 'antri' | 'mencetak' | 'selesai' | 'gagal'> = {
       queued: 'antri', printing: 'mencetak', done: 'selesai', failed: 'gagal',
@@ -75,8 +71,6 @@
 
   let displayJobs   = $derived(jobs);
   let displayPrinter = $derived(printer);
-
-  // PATCH /api/print/:id — ubah status
   async function retryJob(id: string) {
     try {
       const res = await fetch(`https://panel.tail11f9ba.ts.net/api/print/${id}`, {
@@ -87,8 +81,6 @@
       if (res.ok) jobs = jobs.map(j => j.id === id ? { ...j, status: 'antri' } : j);
     } catch { /* silent */ }
   }
-
-  // DELETE /api/print/:id
   async function handleDelete() {
     if (!deleteTarget) return;
     try {
@@ -115,8 +107,6 @@
 </script>
 
 <svelte:head><title>VELVET.FILM — Antrian Cetak</title></svelte:head>
-
-<!-- Modal Hapus Cetak -->
 {#if deleteTarget}
   <ConfirmModal
     title="Batalkan Cetak?"
@@ -173,8 +163,6 @@
         </div>
       </div>
     {/if}
-
-    <!-- Antrian -->
     {#if loading}
       <div class="space-y-3">
         {#each Array(4) as _}

@@ -51,11 +51,11 @@
     <nav class="hidden md:flex items-center gap-8" aria-label="Navigasi utama">
       {#if !isLoggedIn}
         <a
-          href="/gallery"
+          href="/my-gallery"
           id="nav-showcase"
           class="text-body-md text-on-surface-variant hover:text-on-surface transition-colors duration-200"
-          aria-current={$page.url.pathname === '/gallery' ? 'page' : undefined}
-          class:text-on-surface={$page.url.pathname === '/gallery'}
+          aria-current={$page.url.pathname === '/my-gallery' ? 'page' : undefined}
+          class:text-on-surface={$page.url.pathname === '/my-gallery'}
         >
           Galeri Publik
         </a>
@@ -137,7 +137,7 @@
         </a>
 
         {#if !isLoggedIn}
-          <a href="/gallery" class="text-on-surface-variant hover:text-on-surface py-3 text-body-md border-b border-outline-variant" onclick={closeMenu}>
+          <a href="/my-gallery" class="text-on-surface-variant hover:text-on-surface py-3 text-body-md border-b border-outline-variant" onclick={closeMenu}>
             Galeri Publik
           </a>
         {/if}

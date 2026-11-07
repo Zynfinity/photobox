@@ -43,8 +43,6 @@
   });
 
   let d = $derived(stats);
-
-  // Chart helpers
   let dailyData = $derived(d?.dailyActivity ?? []);
   let maxSessions = $derived(Math.max(...dailyData.map(x => x.sessions), 1));
   let maxPhotos = $derived(Math.max(...dailyData.map(x => x.photos), 1));
@@ -86,8 +84,6 @@
   <div class="relative max-w-container mx-auto px-5 md:px-8 py-10">
 
     <AdminBreadcrumb current="Statistik" backLabel="" />
-
-    <!-- ── Stat Cards ── -->
     {#if loading}
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {#each Array(6) as _}
@@ -114,8 +110,6 @@
         {/each}
       </div>
     {/if}
-
-    <!-- ── Charts Row ── -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
 
       <!-- Bar Chart: Aktivitas 7 Hari Terakhir -->
@@ -182,8 +176,6 @@
         {/if}
       </div>
     </div>
-
-    <!-- ── Sesi Terbaru ── -->
     <div>
       <div class="flex items-center justify-between mb-4">
         <p class="text-[11px] font-bold tracking-[0.12em] uppercase text-on-surface-variant">Sesi Terbaru</p>

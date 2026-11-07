@@ -11,8 +11,6 @@
   let loading    = $state(false);
 
   let redirectTo = $derived($page.url.searchParams.get('redirect') ?? '');
-
-  // ── DEV BYPASS ─────────────────────────────────────────────────────────────
   const IS_DEV = import.meta.env.DEV;
 
   function devLogin(role: 'admin' | 'user') {
@@ -24,7 +22,6 @@
       goto(redirectTo || '/my-gallery');
     }
   }
-  // ───────────────────────────────────────────────────────────────────────────
 
   async function handleSubmit(event: Event) {
     event.preventDefault();

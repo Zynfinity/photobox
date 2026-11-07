@@ -7,19 +7,13 @@
   let uploadedImage = $state<string | null>(null);
   let formLabel = $state('');
   let isDraggingFile = $state(false);
-
-  // Holes (areas for user photos)
   type Hole = { id: number; x: number; y: number; w: number; h: number };
   let holes = $state<Hole[]>([]);
   let activeHoleId = $state<number | null>(null);
 
   let formLoading = $state(false);
   let formError = $state('');
-
-  // Confirmation states
   let showConfirmDeleteHole = $state(false);
-
-  // Draggable logic
   let imgWrapperEl: HTMLDivElement | null = null;
   let zoomLevel = $state(1);
   let panX = $state(0);
@@ -212,8 +206,6 @@
 </script>
 
 <svelte:head><title>Tambah Frame — VELVET.FILM</title></svelte:head>
-
-<!-- Modal Hapus Foto -->
 {#if showConfirmDeleteHole}
   <ConfirmModal
     title="Hapus Kotak Foto?"
@@ -223,11 +215,7 @@
     onCancel={() => showConfirmDeleteHole = false}
   />
 {/if}
-
-<!-- Full height container minus navbar, assuming navbar is handled by global layout -->
 <div class="flex h-[calc(100vh-64px)] overflow-hidden w-full" style="background:var(--admin-bg);">
-
-  <!-- KIRI: Canvas Area -->
   <div 
     class="flex-1 relative flex items-center justify-center p-8 overflow-hidden checkerboard touch-none"
     onwheel={handleWheel}
@@ -238,7 +226,6 @@
     onpointerleave={onPointerUp}
   >
     {#if !uploadedImage}
-      <!-- Dropzone -->
       <label 
         class="border-4 border-dashed rounded-3xl p-16 flex flex-col items-center justify-center cursor-pointer transition-colors max-w-xl w-full text-center"
         ondragover={(e) => { e.preventDefault(); isDraggingFile = true; }}
@@ -254,7 +241,6 @@
         <p style="color: var(--admin-text-muted);">Gunakan area transparan pada gambar PNG untuk lubang foto pelanggan.</p>
       </label>
     {:else}
-      <!-- Zoom Control -->
       <div class="fixed bottom-6 left-1/4 -translate-x-1/2 bg-black/50 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-4 z-50 text-white shadow-xl border border-white/10" style="margin-left: 12%;">
         <span class="text-xs font-bold uppercase tracking-wider">Zoom</span>
         <input type="range" min="0.2" max="3" step="0.1" bind:value={zoomLevel} class="w-32 accent-[#00d9d9]" />
@@ -263,17 +249,12 @@
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
         </button>
       </div>
-
-      <!-- Interactive Canvas -->
-      <!-- Wrapper that tightly hugs the image -->
       <div 
         bind:this={imgWrapperEl}
         class="relative shadow-2xl transition-transform duration-75" 
         style="max-width:100%; max-height:100%; transform: translate({panX}px, {panY}px) scale({zoomLevel}); transform-origin: center; cursor: {isPanning ? 'grabbing' : 'grab'};"
       >
         <img src={uploadedImage} alt="Frame Preview" class="max-w-full max-h-full object-contain pointer-events-none" style="max-height: 85vh;" />
-        
-        <!-- Holes Overlay -->
         {#each holes as hole, index}
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <div 
@@ -285,8 +266,6 @@
             onpointerup={onPointerUp}
           >
             <span class="text-white/70 font-bold text-4xl pointer-events-none">{index + 1}</span>
-            
-            <!-- Resize Handle -->
             {#if activeHoleId === hole.id}
               <div 
                 class="absolute bottom-1 right-1 w-6 h-6 bg-yellow-400 rounded-full cursor-nwse-resize flex items-center justify-center text-black shadow-md"
@@ -302,8 +281,6 @@
       </div>
     {/if}
   </div>
-
-  <!-- KANAN: Sidebar -->
   <div class="w-[360px] shrink-0 border-l flex flex-col p-6 shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-10 overflow-y-auto" style="border-color:var(--admin-border); background:var(--admin-card-bg);">
     <h2 class="text-2xl font-bold mb-6 font-['Space_Grotesk']" style="color: var(--admin-text);">Tambah Frame</h2>
     
